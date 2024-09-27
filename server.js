@@ -34,7 +34,7 @@ const connectToDatabase = async () => {
         await mongoose.connect(`${config.mongodb.uri}/${config.mongodb.dbName}`);
         console.log(`Connesso al database: ${config.mongodb.dbName}`);
         // Creazione dell'utente admin (se necessario)
-        // createAdminUser(); // Commentato se non necessario
+        createAdminUser(); // Commentato se non necessario
     } catch (error) {
         console.error('Errore durante la connessione al database:', error);
     }
