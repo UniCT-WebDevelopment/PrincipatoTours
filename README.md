@@ -29,11 +29,11 @@ Principato Tours è un'applicazione web progettata per gestire in modo efficient
 Installazione
 
 ## Installazione
-```
+
 Nella cartella del progetto, esegui il seguente comando per installare tutte le dipendenze necessarie con npm:
 
 ```bash
-npm install express, socket.io, multer, express-session, bcryptjs, express-validator, express-rate-limit, fs, mongoose
+npm install
 ````
 
 Assicurati di avere MongoDB installato e in esecuzione localmente. Puoi avviare il server con MongoDB
