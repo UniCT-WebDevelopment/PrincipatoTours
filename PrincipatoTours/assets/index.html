@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+   
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <img alt="Principato Tours Logo" title="Principato Tours Logo" src="img/principato-new-logo.png" id="myLogo" />
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#home">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#about">Chi siamo</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#contact">Contatti</a>
+        </li>
+        
+        
+        <li class="nav-item">
+          <a class="nav-link" href="#my-bookings">Prenotazioni</a>
+        </li>
+        <li class="nav-item" id="availabilityNav">
+          <a class="nav-link" href="#availability">Disponibilità</a>
+        </li>
+        
+        <li id="loginNavItem" class="nav-item">
+          <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+        </li>
+        <li id ="registerNavItem" class="nav-item">
+          <a class="nav-link" href="#" data-toggle="modal" data-target="#registerModal">Registrati</a>
+        </li>
+        <li id="logoutNavItem" class="nav-item" style="display:none;">
+          <a class="nav-link" href="#" id="logoutLink">Logout</a>
+      </li>
+
+      </ul>
+      <span id="welcomeMessage" class="navbar-text mr-3"></span>
+
+    </div>
+  </nav>
+
+<!-- Home Section -->
+<section id="home" class="content-section">
+  
+    <div class="hero">
+    <div class="container">
+
+          <h1>Scopri il Mondo con Principato Tours</h1>
+          <p>Viaggia con stile e comfort con la nostra flotta di autobus di alta gamma</p>
+          <a href="#tours" class="btn btn-primary btn-lg mt-4" style="background-color: red; border: none;">Esplora i Nostri Tour</a>
+      </div>
+    </div>
+  <section id="viaggiprogr">
+    <div class="titolo" style="margin-bottom: 20px;margin-top: 20px;"> 
+    <h1 class="custom-title" style="text-align: center;">Vuoi prenotare un tour già pronto?</h1>
+      <br><h2 class="custom-subtitle"><b>Scegli il tuo viaggio preferito e inserisci i tuoi dati per inviare la richiesta!</b></h2>
+      <span class="custom-span"><ul id="schedules"></ul></span>
+    </h1>
+    </div>
+  </section>
+  <!-- Modulo di prenotazione nascosto -->
+  <form id="bookingForm" style="display:none;">
+    <input type="hidden" id="scheduleIdInput" />
+    <input type="hidden" id="userIdInput" value="" /> <!-- Campo nascosto per l'ID utente -->
+
+    <div class="form-group-booking">
+      <label for="firstName">Nome:</label>
+      <input type="text" id="firstName" required />
+    </div>
+    
+    <div class="form-group-booking">
+      <label for="lastName">Cognome:</label>
+      <input type="text" id="lastName" required />
+    </div>
+    
+    <div class="form-group-booking">
+      <label for="documentNumber">Codice Fiscale:</label>
+      <input type="text" id="documentNumber" required />
+    </div>
+    
+    <div class="form-group-booking">
+      <label for="seatsRequestedBooking">Passeggeri:</label>
+      <input type="number" id="seatsRequestedBooking" name="seatsRequestedBooking" required />
+    </div>
+    
+    <button type="submit" class="btn btn-danger" style="width:100%">Conferma Prenotazione</button>
+  </form>
+<!--Sezione Tours-->
+<section id="tours" class="container">
+    <h2 class="section-title">Che tipi di Tours facciamo?</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" src="img/tempio.jpg" alt="Tour Culturali">
+                <div class="card-body">
+                    <h5 class="card-title">Tours Archeologici</h5>
+                    <p class="card-text">Visita i monumenti e i musei più famosi con guide esperte.</p>
+                    <a href="#viaggiprogr" class="btn btn-primary btn-lg mt-4" style="background-color: red; border: none;">Scopri di più</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" src="img/culturali.jpg" alt="Viaggi Avventura">
+                <div class="card-body">
+                    <h5 class="card-title">Tours Culturali</h5>
+                    <p class="card-text">Parti per un viaggio emozionante in destinazioni esotiche.</p>
+                    <a href="#viaggiprogr" class="btn btn-primary btn-lg mt-4" style="background-color: red; border: none;">Scopri di più</a>
+                    </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" src="img/tropea.jpeg" alt="Relax e Benessere">
+                <div class="card-body">
+                    <h5 class="card-title">Relax e Benessere</h5>
+                    <p class="card-text">Goditi un viaggio rilassante in location serene e tranquille.</p>
+                    <a href="#viaggiprogr" class="btn btn-primary btn-lg mt-4" style="background-color: red; border: none;">Scopri di più</a>
+                    </div>
+            </div>
+        </div>
+    
+
+      </section>
+<!-- Sezione recensioni -->
+<section id="testimonials" class=" py-5 no-bg-center">
+  <div class="container">
+      <h2 class="section-title text-center">Cosa Dicono di Noi</h2>
+      <div id="testimonialCarousel" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner">
+              <div class="carousel-item active">
+                  <blockquote class="blockquote text-center">
+                      <p class="mb-0">"Un'esperienza di viaggio indimenticabile! Autobus confortevoli e staff molto professionale."</p>
+                      <footer class="blockquote-footer">Giulia R., <cite title="Source Title">Milano</cite></footer>
+                  </blockquote>
+              </div>
+              <div class="carousel-item">
+                  <blockquote class="blockquote text-center">
+                      <p class="mb-0">"Servizio eccellente e ottima organizzazione. Consiglio vivamente Principato Tours."</p>
+                      <footer class="blockquote-footer">Marco P., <cite title="Source Title">Roma</cite></footer>
+                  </blockquote>
+              </div>
+              <div class="carousel-item">
+                  <blockquote class="blockquote text-center">
+                      <p class="mb-0">"Viaggio sicuro e confortevole. Non vedo l'ora di partire per un nuovo tour."</p>
+                      <footer class="blockquote-footer">Anna L., <cite title="Source Title">Torino</cite></footer>
+                  </blockquote>
+              </div>
+          </div>
+          <a class="carousel-control-prev" href="#testimonialCarousel" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#testimonialCarousel" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+          </a>
+      </div>
+  </div>
+</section>
+  </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="content-section" style="display:none;">
+  <div class="container">
+    <h2>Chi siamo</h2>
+    <p class="lead">Benvenuti alla <strong>Principato Tours</strong>, una compagnia di autobus turistici che da oltre 70 anni porta i propri clienti a scoprire le meraviglie del mondo, offrendo comfort, sicurezza e professionalità.</p>
+
+    <h2>La Nostra Storia</h2>
+    <p>
+        Fondata nel 1965, Principato Tours è cresciuta rapidamente diventando una delle principali aziende nel settore del turismo su strada. Con oltre sette decenni di esperienza, abbiamo costruito una reputazione basata su affidabilità, qualità del servizio e soddisfazione del cliente.
+    </p>
+
+    <h2>I Nostri Mezzi</h2>
+    <p>
+        Utilizziamo solo i migliori autobus presenti sul mercato, equipaggiati con le più recenti tecnologie per garantire il massimo comfort e la sicurezza durante ogni viaggio. La nostra flotta è composta da veicoli moderni, ecologici e costantemente aggiornati per rispondere alle esigenze dei viaggiatori di oggi.
+    </p>
+    <p>
+    <img src="img/gif-autobus.gif" style="width: 200px;height: 300px"/>
+    </p>
+    <h2>La Nostra Missione</h2>
+    <p>
+        La nostra missione è semplice: rendere ogni viaggio un'esperienza indimenticabile. Con la nostra attenzione ai dettagli e il nostro impegno per la qualità, ci assicuriamo che ogni cliente viva un'avventura senza pari, scoprendo nuovi luoghi e creando ricordi preziosi.
+    </p>
+
+    <h2>I Nostri Valori</h2>
+    <ul>
+        <li><strong>Affidabilità:</strong> Con oltre 70 anni di esperienza, siamo un nome di cui potete fidarvi.</li>
+        <li><strong>Sicurezza:</strong> I nostri autobus sono dotati delle ultime tecnologie in termini di sicurezza stradale.</li>
+        <li><strong>Comfort:</strong> Ogni viaggio è pensato per offrire il massimo relax ai nostri passeggeri.</li>
+        <li><strong>Innovazione:</strong> Continuiamo ad aggiornare la nostra flotta e i nostri servizi per soddisfare le esigenze del futuro.</li>
+    </ul>
+
+    <h2>Perché Sceglierci?</h2>
+    <p>
+        Quando scegli Principato Tours, scegli un partner che mette il cliente al centro di tutto. Il nostro team di esperti è dedicato a garantire che ogni aspetto del vostro viaggio sia perfetto, dal primo contatto fino al ritorno a casa.
+    </p>
+
+    <p class="lead">Scoprite il mondo con noi. <strong>Principato Tours</strong> - il vostro compagno di viaggio ideale da oltre 70 anni.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="content-section" style="display:none;">
+  <div class="container">
+    <h2>Contattaci</h2>
+    <p>Rimani in contatto con noi per più informazioni e pacchetti di viaggi personalizzati.</p>
+    <form>
+      <div class="form-group">
+        <label for="contactName">Nome</label>
+        <input type="text" class="form-control" id="contactName" placeholder="Inserisci il tuo nome">
+      </div>
+      <div class="form-group">
+        <label for="contactEmail">Indirizzo Email</label>
+        <input type="email" class="form-control" id="contactEmail" placeholder="Inserisci la tua email">
+      </div>
+      <div class="form-group">
+        <label for="contactMessage">Messaggio</label>
+        <textarea class="form-control" id="contactMessage" rows="3" placeholder="Inserisci il tuo messaggio"></textarea>
+      </div>
+      <button type="submit" style="width:100%" >Invia</button>
+    </form>
+  </div>
+</section>
+<section id="availability" class="content-section" style="display: none;">
+  
+  <div class="container mt-5">
+    <h1 style="text-align: center;">Disponibilità Autobus</h1>
+    <div id="busCalendar"></div> <!-- Container per il calendario -->
+  </div>
+</section>
+<section id="my-bookings" class="content-section" style="display: none;">
+  <h3 id="userBookingTitle" style="margin-left: 10px;">Le mie prenotazioni</h3>
+  <div id="user-reservation-container"></div>
+
+    <div id="user-quote-form" style="display: none; margin-top: 20px;margin-left:10px;">
+    <p>Prezzo proposto per la tua prenotazione: <span id="user-quote-details"></span></p>
+    <button id="confirm-user-button" class="btn btn-success">Conferma Prenotazione</button>
+</div>
+  <h3>Prenotazioni ai tours</h3>
+  <ul id="userBookings"></ul>
+
+</section>
+
+
+  <!-- Login Modal -->
+  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalLabel">Login</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="loginForm">
+            <div class="form-group">
+              <label for="loginUsername">Username</label>
+              <input type="text" class="form-control" id="loginUsername" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+              <label for="loginPassword">Password</label>
+              <input type="password" class="form-control" id="loginPassword" placeholder="Enter password">
+            </div>
+            <button type="submit" style="width:100%">Login</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="registerModalLabel">Registrati</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="registerForm">
+            <div class="form-group">
+              <label for="registerUsername">Username  <span style="font-weight: bold;"> (minimo 3 caratteri alfanumerici)</span></label>
+              <input type="text" class="form-control" id="registerUsername" placeholder="Inserisci un username">
+            </div>
+            <div class="form-group">
+              <label for="registerPassword">Password <span style="font-weight: bold;"> (minimo 6 caratteri alfanumerici)</span> </label>
+              <input type="password" class="form-control" id="registerPassword" placeholder="Inserisci la password">
+            </div>
+            <button type="submit" style="width:100%">Register</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<!-- Pulsante fluttuante per aprire la chat -->
+<button id="chatButton" class="floating-chat-btn" style="display: none;">💬</button>
+
+<!-- Contenitore della chat -->
+<div id="chat" style="display: none;">
+  <span><b>Orari di apertura: Lun-Ven: dalle 9:00 alle 13:00.</b></span>
+
+  <div id="chatMessages" style="border:1px solid #ccc; height:140px; overflow-y:scroll;">
+  </div>
+  <input id="chatInput" type="text" placeholder="Scrivi un messaggio..." />
+  <button id="chatSendButton">Invia</button>
+</div>
+
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+
+  <script>
+    const socket = io();
+    // Ricezione del preventivo dall'amministratore
+// Quando si riceve un preventivo
+socket.on('receiveQuote', ({ bookingId, quoteDetails }) => {
+    alert('Hai ricevuto un nuovo preventivo! Verifica nella pagina Prenotazioni!');
+
+    // Salva i dettagli del preventivo nel localStorage
+    localStorage.setItem('quoteDetails', JSON.stringify({ bookingId, quoteDetails }));
+
+    // Mostra il preventivo all'utente
+    showQuote(bookingId, quoteDetails);
+});
+
+function showQuote(bookingId, quoteDetails) {
+    document.getElementById('user-quote-form').style.display = 'block';
+    document.getElementById('user-quote-details').innerText = quoteDetails;
+
+    const confirmButton = document.getElementById('confirm-user-button');
+    confirmButton.style.marginBottom = "30px";
+
+    // Gestisci la conferma della prenotazione
+    confirmButton.onclick = async () => {
+        try {
+            const response = await fetch('/admin/confirm-booking', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ bookingId }) // Invia l'ID della prenotazione
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert(result.message);
+                console.log('BUSS: ' + bookingId);
+
+                // Emissione dell'evento di conferma prenotazione al server
+                socket.emit('confirmUserBooking', { bookingId });
+                
+                // Rimuovi il preventivo dal localStorage una volta confermato
+                localStorage.removeItem('quoteDetails');
+            } else {
+                alert(result.message);
+            }
+        } catch (error) {
+            console.error('Errore nella conferma della prenotazione:', error);
+        } finally {
+            document.getElementById('user-quote-form').style.display = 'none';
+        }
+    };
+}
+
+// Verifica se ci sono preventivi salvati nel localStorage quando la pagina viene caricata
+window.onload = () => {
+    const savedQuote = localStorage.getItem('quoteDetails');
+    if (savedQuote) {
+        const { bookingId, quoteDetails } = JSON.parse(savedQuote);
+        showQuote(bookingId, quoteDetails); // Mostra il preventivo salvato
+    }
+};
+let username = '';
+let isAdmin = false;
+socket.on('updateCalendarForAll', (data) => {
+    console.log('Ricevuto updateCalendarForAll lato utente:', data);
+    updateCalendarWithNewReservation(data); // Funzione che aggiorna la vista del calendario utente
+});
+socket.on('adminBusAvailabilityUpdate', (data) => {
+    const { busId, availability } = data;
+    updateCalendarWithNewAvailability(busId, availability);
+});
+socket.on('setUserDetails', (data) => {
+    username = data.username;
+    isAdmin = data.isAdmin;
+
+    console.log(`Dettagli utente ricevuti: ${username}, Admin: ${isAdmin}`);
+
+    if (!isAdmin) {
+        const adminNavItem = document.getElementById('adminNavItem');
+        if (adminNavItem) {
+            adminNavItem.style.display = "none"; // Nascondi il pulsante admin se esiste
+        }
+        document.getElementById('chatButton').style.display = 'block';
+        document.getElementById('chatButton').addEventListener('click', () => {
+            const chat = document.getElementById('chat');
+            chat.style.display = chat.style.display === 'none' || chat.style.display === '' ? 'block' : 'none';
+        });
+    } else {
+        // Solo se è admin, crea e aggiungi il pulsante admin
+        const existingAdminNavItem = document.getElementById('adminNavItem');
+        if (!existingAdminNavItem) { // Controlla se il pulsante admin non esiste già
+            const adminNavItem = document.createElement('li');
+            adminNavItem.className = "nav-item";
+            adminNavItem.id = "adminNavItem";
+            adminNavItem.innerHTML = `<a class="nav-link" href="#admin">Admin</a>`;
+            const navList = document.querySelector('.navbar-nav');
+            navList.appendChild(adminNavItem);
+
+            // Aggiungi il listener per il click sul pulsante admin
+            adminNavItem.querySelector('a').addEventListener('click', (event) => {
+                event.preventDefault();
+                window.location.href = '/admin'; // Reindirizza alla pagina admin
+            });
+        }
+    }
+});
+document.getElementById('chatSendButton').addEventListener('click', () => {
+  const msg = document.getElementById('chatInput').value;
+  console.log(`Invio messaggio: ${msg}`);
+  socket.emit('chatMessage', { username, message: msg });
+
+  document.getElementById('chatInput').value = '';
+});
+
+socket.on('chatMessage', (data) => {
+  const chatMessages = document.getElementById('chatMessages');
+  const messageElement = document.createElement('div');
+  messageElement.classList.add('message');
+  messageElement.textContent = `${data.username}: ${data.message}`;
+  chatMessages.appendChild(messageElement);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+});
+  </script>
+</body>
+<footer class="" style="background-color: #dc3c2c;">
+  <img alt="Principato Tours Logo" title="Principato Tours Logo" src="img/logo-grey.png" id="myLogo" style="margin-left: 20px;width:200px;height:60px;"/>
+
+  <div class="text-center text-white p-3">
+    Seguici o contattaci su   
+  </div>
+    <div class="container d-flex justify-content-center py-5">
+      
+      
+        <a href="https://www.facebook.com/principatotours">
+          <img src="/img/facebook.png" style="width:30px;height:30px"/>
+        </a>
+        <a href="https://wa.me/+393517167643/?text=Salve Principato Tours! Vorrei richiedere maggiori informazioni">
+          <img src="/img/whatsapp.png" style="margin-left:30px;width:30px;height:30px"/>
+        </a>
+    </div>
+    <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2024 Copyright:
+      <a class="text-white">Principatotours.it Made By Giuseppe Principato</a>
+
+      
+    </div>
+    <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+    <a class="text-white">P.Iva: 04764110872</a>
+    </div>
+    
+  </footer>
+</html>

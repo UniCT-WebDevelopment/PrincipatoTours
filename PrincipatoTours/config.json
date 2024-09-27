@@ -1,0 +1,9 @@
+{
+    "mongodb": {
+        "uri": "mongodb://localhost:27017",
+        "dbName": "principatotours"
+    },
+    "server": {
+        "port": 3000
+    }
+}

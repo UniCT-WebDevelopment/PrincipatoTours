@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard amministrativa</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<style>
+   
+   .chat-container {
+  display: flex;
+  height: 300px;
+}
+
+.user-list {
+  width: 30%;
+  height: 87%;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+}
+
+.chat-window {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  max-height: 200px;
+}
+
+.chat-input-container {
+  display: flex;
+  align-items: center; /* Allinea verticalmente */
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
+#chatInput {
+  flex: 1; /* Fa sì che l'input occupi tutto lo spazio disponibile */
+  padding: 10px;
+}
+
+#chatSendButton {
+  margin-left: 10px; /* Spazio tra l'input e il bottone */
+  padding: 10px 20px;
+  display: flex;
+  align-items: center; /* Centra verticalmente il testo */
+  justify-content: center; /* Centra orizzontalmente il testo */
+  height: 100%; /* Altezza piena per allinearlo all'input */
+  font-size: 16px; /* Font un po' più grande per migliorare la visibilità */
+}
+.user {
+        cursor: pointer;
+        padding: 5px;
+        border-bottom: 1px solid #ccc;
+    }
+.user:hover {
+        background-color: #f0f0f0;
+}
+</style>
+<body>
+    <header>
+        <a href="/"><img alt="Principato Tours Logo" title="Principato Tours Logo" src="img/logo-grey.png" id="myLogo"/></a>
+        <h1 style="color:white">Dashboard amministrativa Principato Tours</h1>
+    </header>
+<h1 style="margin-top:10px; display: none;" id="bookingTitle">Lista delle Prenotazioni ai Tours già programmati:</h1>
+    <div id="admin-bookings-container" style="margin-top:15px;margin-left:20px">            
+<!-- Prenotazioni tours  -->
+    </div>
+    <h1 style="margin-top:10px; display: none;" id="busBookingTitle">Lista delle Prenotazioni agli Autobus:</h1>
+
+    <div id="bus-reservation-container" style="margin-top:15px;margin-left:20px">            
+        
+    </div>
+    <div id="quote-form" style="display:none; margin-left: 10px;">
+        <h3>Preventivo</h3>
+        <p>Prezzo suggerito: <span id="suggested-price"></span> €</p>
+        <input type="text" id="quote-details" placeholder="Dettagli del preventivo" />
+        <button onclick="sendQuote()">Invia preventivo</button>
+    </div>
+    <!-- Form per preventivo  la conferma-->
+    <h3 style="text-align:center">Chat con gli utenti</h3>
+    <div class="chat-container">
+        <div id="usersList" class="user-list"></div>
+        <div class="chat-window">
+            <div id="chatMessages" class="chat-messages"></div>
+            <div class="chat-input-container">
+                <input id="chatInput" type="text" placeholder="Scrivi un messaggio..." />
+                <button id="chatSendButton" class="btn btn-danger">Invia</button>
+            </div>
+        </div>
+    </div>
+        <h1 style="margin-top:10px;text-align: center;" id="UpdateBus">Aggiorna la disponibilità dei Bus</h1>
+        
+        <div id="busCalendar" class="mt-5"></div>
+        
+        <h1 style="margin-top:10px;text-align: center;">Crea un nuovo Tour</h1>
+
+        <form id="scheduleForm" enctype="multipart/form-data">
+            <input type="text" id="destination" name="destination" placeholder="Destinazione" required style="width:97.5%;">
+            <input type="text" id="budId" name="busId" placeholder="Id del Bus" required style="width:97.5%;">
+            <input type="number" id="duration" name="duration" placeholder="Durata del tour (in giorni)" required style="width:97.5%;">
+            <div class="form-group">
+                <input type="date" id="date" name="date" style="width:97.5%;">
+            </div>            
+            <input type="text" id="description" name="description" placeholder="Descrizione" required style="width:97.5%;">
+            <input type="number" id="capacity" name="capacity" placeholder="Posti disponibili"  style="width:97.5%;" required />
+            <input type="number" id="price" name="price" placeholder="Prezzo a persona"  style="width:97.5%;" required />
+
+            <input type="file" id="tourImage" name="tourImage" accept="image/*" required style="width:97.5%;">
+            <button type="submit" style="width:100%;">Aggiungi Tour</button>
+        </form>
+        <ul id="adminSchedules"></ul>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+<script>
+const unreadCounts = {}; // Oggetto per tenere traccia dei messaggi non letti
+
+const socket = io();
+document.addEventListener('DOMContentLoaded', () => {
+    const chatMessages = document.getElementById('chatMessages');
+    const usersListDiv = document.getElementById('usersList');
+    let selectedUser = null;
+
+    socket.emit('requestUsersList'); // Richiede la lista degli utenti al caricamento
+    // Aggiorna la lista degli utenti connessi
+    socket.on('usersList', (users) => {
+    usersListDiv.innerHTML = '';
+    const uniqueUsers = new Set(); // Per evitare duplicati
+    users.forEach(user => {
+        
+    if (user.username !== 'admin' && !uniqueUsers.has(user.username)) {
+        uniqueUsers.add(user.username);
+        const unreadCount = unreadCounts[user.username] || 0; // Ottieni il conteggio dei messaggi non letti
+
+        const userElement = document.createElement('div');
+        userElement.classList.add('user');
+        userElement.innerHTML = `<strong>${user.username}</strong>
+        <span class="unread-icon">${unreadCount > 0 ? '🔴' : ''}</span>`;
+
+        userElement.onclick = () => {
+            selectUser(user.username); // Funzione per selezionare l'utente
+            unreadCounts[user.username] = 0; // Resetta il conteggio quando si seleziona l'utente
+            updateUserList(); // Funzione per aggiornare la lista degli utenti
+
+        };
+        usersListDiv.appendChild(userElement);
+    }
+});
+});
+
+    // Funzione per selezionare un utente dalla lista
+    function selectUser(username) {
+    selectedUser = username;
+    console.log(`Utente selezionato: ${selectedUser}`);
+    socket.emit('getUserMessages', { username });
+}
+
+    // Ricevi i messaggi dell'utente selezionato
+    socket.on('userMessages', (data) => {
+        if (data.userId === selectedUser) {
+            chatMessages.innerHTML = '';
+            data.messages.forEach(msg => {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message');
+                messageElement.textContent = `${msg.sender}: ${msg.message}`;
+                chatMessages.appendChild(messageElement);
+            });
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    });
+    
+    socket.on('userConfirmedBooking', (data) => {
+    console.log('Dati ricevuti per aggiornare il calendario:', data);
+
+    // Aggiorna il calendario con la nuova prenotazione
+    updateCalendarWithNewReservation(data);
+
+    const { bookingId } = data;
+
+    // Trova l'elemento relativo alla prenotazione con l'ID corrispondente
+    const bookingElement = document.getElementById(`busBooking-${bookingId}`);
+    const statusElement = document.getElementById(`${bookingId}`);
+
+    alert('Conferma ricevuta per ID: ' + bookingId);
+    if (bookingElement) {
+        // Nascondi i pulsanti di conferma e annullamento
+        bookingElement.querySelector('.btn-success').style.display = 'none';
+        bookingElement.querySelector('.btn-danger').style.display = 'none';
+        if (statusElement) {
+            statusElement.textContent = 'Confirmed';
+        }
+    }
+});
+
+        // Ricevi i nuovi messaggi in tempo reale
+    socket.on('chatMessage', (data) => {
+        console.log('abbiamo ricevutoz: '+data.message +' da: ' +data.username + 'data.toUser: '+data.toUser+ ' selectedUser: '+ selectedUser);
+        if (data.toUser === selectedUser || data.username === selectedUser) {
+            console.log('abbiamo ricevutoz: '+data.message +'da:' +data.username);
+
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.innerHTML = `<strong>${data.username}:</strong> ${data.message}`;
+            console.log('messageElement: '+messageElement);
+
+            chatMessages.appendChild(messageElement);
+            console.log('chatMessages: '+chatMessages);
+
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        else {
+        // Incrementa il conteggio dei messaggi non letti per l'utente
+        unreadCounts[data.username] = (unreadCounts[data.username] || 0) + 1;
+        updateUserList(); // Aggiorna la lista per mostrare il nuovo conteggio
+    }
+    });
+    function updateUserList() {
+    const userElements = usersListDiv.querySelectorAll('.user');
+    userElements.forEach(userElement => {
+        const username = userElement.querySelector('strong').textContent;
+        const unreadCount = unreadCounts[username] || 0;
+        const unreadIcon = userElement.querySelector('.unread-icon');
+        unreadIcon.textContent = unreadCount > 0 ? '🔴' : '';
+    });
+}
+    // Invia un messaggio dall'admin all'utente selezionato
+    document.getElementById('chatSendButton').addEventListener('click', () => {
+        const input = document.getElementById('chatInput');
+        
+        const message = input.value.trim();
+        console.log('Admin ha inviato: ' + message);
+        console.log('message: ' + message +' selectedUser:' + selectedUser)
+        if (!message || !selectedUser) return;
+
+        // Invia il messaggio
+        socket.emit('adminMessage', { message, toUser: selectedUser });
+        input.value = '';  // Svuota l'input
+    });
+});
+
+
+socket.on('newBooking', (data) => {
+    console.log('Nuova prenotazione ricevuta:', data);
+    const bookingList = document.getElementById('admin-bookings-container');
+    const newBookingItem = document.createElement('p');
+    newBookingItem.textContent = `${data.firstName} ${data.lastName} ha prenotato il tour con ID ${data.scheduleId}, con Codice Fiscale: ${data.documentNumber} per posti numero:+ ${data.seatsRequestedBooking}`;
+    bookingList.appendChild(newBookingItem);
+});
+// Ascolta l'evento di nuova prenotazione in tempo reale
+socket.on('newBusReservation', async (data) => {
+    console.log('Nuova prenotazione ricevuta:', data);
+    await loadBusAvailabilities(currentMonth, currentYear);  // Ricarica le disponibilità
+
+    const busReservationList = document.getElementById('bus-reservation-container');
+    const newBusReservationItem = document.createElement('p');
+    
+    // Verifica se il campo destinations è un array
+    let destinationText = '';
+    if (Array.isArray(data.destinations) && data.destinations.length > 0) {
+        destinationText = data.destinations.join(', '); // Unisce le destinazioni con una virgola
+    } else {
+        destinationText = 'Nessuna destinazione specificata';
+    }
+
+    // Aggiorna il testo della prenotazione con più destinazioni
+    newBusReservationItem.textContent = `${data.username} ha prenotato il bus con ID ${data.busId}, con posti a sedere richiesti: ${data.seatsRequested}, destinazioni: ${destinationText}, della durata di ${data.tripDuration} giorni, a partire dal giorno: ${data.date}`;
+    
+    busReservationList.appendChild(newBusReservationItem);
+});
+socket.on('updateCalendarForAll', (data) => {
+    console.log('Ricevuto updateCalendarForAll lato admin:', data);
+    updateCalendarWithNewReservation(data); // Funzione che aggiorna la vista del calendario
+});
+
+</script>
+    <script src="/js/main.js"></script>
+
+</body>
+</html>
